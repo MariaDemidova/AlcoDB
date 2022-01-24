@@ -47,7 +47,7 @@ class MainFragment : Fragment() {
         alcoAdapter.setData(presenter.getListOfAlco())
         
         alcoAdapter.listener = AlcoAdapter.OnItemViewClickListener { alco, position ->
-
+//В дальнейшем будет открываться новый фрагмент с подгружаемыи ингридиентами и картинкой
             AlertDialog.Builder(requireContext())
                 .setTitle("${alco.name} ${presenter.counterClick(position)}")
                 .setMessage("Потом тут откроется фрагмент с деталями")
