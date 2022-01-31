@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import demidova.alcodb.R
 import demidova.alcodb.databinding.ActivityMainBinding
+import demidova.alcodb.ui.users.UserFragment
 import demidova.alcodb.view.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, UserFragment.newInstance())
                 .commitNow()
         }
     }

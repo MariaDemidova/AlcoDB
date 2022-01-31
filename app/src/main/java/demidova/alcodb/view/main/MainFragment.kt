@@ -11,8 +11,12 @@ import demidova.alcodb.view.adapter.AlcoAdapter
 import demidova.alcodb.R
 import demidova.alcodb.databinding.FragmentMainBinding
 import demidova.alcodb.presenter.MainPresenter
+import moxy.MvpAppCompatFragment
+import moxy.MvpView
+import moxy.ktx.moxyPresenter
+import moxy.presenter.InjectPresenter
 
-class MainFragment : Fragment() {
+class MainFragment : MvpAppCompatFragment(), MainView {
 
     companion object {
         fun newInstance() = MainFragment()
@@ -22,7 +26,8 @@ class MainFragment : Fragment() {
         AlcoAdapter()
     }
 
-    private val presenter = MainPresenter()
+
+    private val presenter by moxyPresenter { MainPresenter()}
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
@@ -45,19 +50,23 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = alcoAdapter
         alcoAdapter.setData(presenter.getListOfAlco())
-        
+
         alcoAdapter.listener = AlcoAdapter.OnItemViewClickListener { alco, position ->
 //В дальнейшем будет открываться новый фрагмент с подгружаемыи ингридиентами и картинкой
-            AlertDialog.Builder(requireContext())
-                .setTitle("${alco.name} ${presenter.counterClick(position)}")
-                .setMessage("Потом тут откроется фрагмент с деталями")
-                .create()
-                .show()
+            showAlertDialog(alco.name, position)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun showAlertDialog(name: String, position: Int) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("${name} ${presenter.counterClick(position)}")
+            .setMessage("Потом тут откроется фрагмент с деталями")
+            .create()
+            .show()
     }
 }
