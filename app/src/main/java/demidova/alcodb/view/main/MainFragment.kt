@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import demidova.alcodb.App
 import demidova.alcodb.model.Alco
 import demidova.alcodb.view.adapter.AlcoAdapter
 import demidova.alcodb.R
@@ -16,7 +17,7 @@ import moxy.MvpView
 import moxy.ktx.moxyPresenter
 import moxy.presenter.InjectPresenter
 
-class MainFragment : MvpAppCompatFragment(), MainView {
+class MainFragment : MvpAppCompatFragment(), MainViewFragment {
 
     companion object {
         fun newInstance() = MainFragment()
@@ -27,7 +28,7 @@ class MainFragment : MvpAppCompatFragment(), MainView {
     }
 
 
-    private val presenter by moxyPresenter { MainPresenter()}
+    private val presenter by moxyPresenter { MainPresenter(App.instance.router)}
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!

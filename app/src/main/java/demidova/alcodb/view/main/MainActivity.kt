@@ -1,25 +1,27 @@
 package demidova.alcodb.view.main
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.github.terrakok.cicerone.androidx.AppNavigator
+import demidova.alcodb.App
 import demidova.alcodb.R
-import demidova.alcodb.databinding.ActivityMainBinding
-import demidova.alcodb.ui.users.UserFragment
-import demidova.alcodb.view.main.MainFragment
+import demidova.alcodb.presenter.MainPresenter
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MvpAppCompatActivity(R.layout.activity_main), MainView {
 
-    private val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
+    val navigator = AppNavigator(this, R.id.container)
+
+    val presenter by moxyPresenter {
+        MainPresenter(App.instance.router)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, UserFragment.newInstance())
-                .commitNow()
-        }
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        App.instance.navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        App.instance.navigatorHolder.removeNavigator()
+        super.onPause()
     }
 }
