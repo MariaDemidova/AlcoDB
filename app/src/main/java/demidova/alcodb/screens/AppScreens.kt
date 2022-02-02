@@ -12,15 +12,11 @@ object AppScreens {
     fun alcoScreen(): Screen{
         return FragmentScreen { MainFragment()}
     }
-//
-//    fun detailsScreen(alco: Alco): Screen{
-//        return FragmentScreen { DetailsFragment().apply {
-//            arguments = bundleOf("alco" to alco)
-//        } }
-//    }
 
-
-    fun detailsScreen( ): Screen{
-        return FragmentScreen { DetailsFragment() }
+    fun detailsScreen(alco: Alco): Screen{
+        return FragmentScreen { DetailsFragment().apply {
+            arguments = bundleOf("alco" to alco)
+        } }
     }
+
 }

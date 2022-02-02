@@ -21,7 +21,7 @@ class AlcoPresenter(val repository: RepositoryImpl, private val router: Router) 
         loadData()
 
         alcoListPresenter.itemClickListener = {
-            router.navigateTo(AppScreens.detailsScreen())
+            router.navigateTo(AppScreens.detailsScreen(alcoListPresenter.alcos[it.pos]))
         }
     }
 
@@ -41,7 +41,7 @@ class AlcoPresenter(val repository: RepositoryImpl, private val router: Router) 
 
         val alcos = mutableListOf<Alco>()
 
-        override  var itemClickListener = {}
+        override  var itemClickListener: (AlcoItemView) -> Unit = {}
 
 
         override fun getCount() = alcos.size
