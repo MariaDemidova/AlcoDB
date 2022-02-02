@@ -33,7 +33,9 @@ class DetailsFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nameDetails.text = arguments?.getParcelable<Alco>("alco")?.name
+        val alco = arguments?.getParcelable<Alco>("alco")
+        binding.nameDetails.text = alco?.name
+        binding.imgDetails.setImageResource(alco!!.img)
     }
 
     override fun onDestroyView() {
