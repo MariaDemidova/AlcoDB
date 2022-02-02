@@ -7,42 +7,51 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import demidova.alcodb.R
+import demidova.alcodb.databinding.ItemAlcoBinding
 import demidova.alcodb.model.Alco
+import demidova.alcodb.presenter.AlcoPresenter
+import demidova.alcodb.view.AlcoItemView
 
-class AlcoAdapter() : RecyclerView.Adapter<AlcoAdapter.ViewHolder>() {
-
-    var listener: OnItemViewClickListener? = null
+class AlcoAdapter(private val presenter: AlcoPresenter.AlcoListPresenter) :
+    RecyclerView.Adapter<AlcoAdapter.ViewHolder>() {
 
     private var alcoList: List<Alco> = arrayListOf()
 
-    internal fun setData(list: List<Alco>){
+    internal fun setData(list: List<Alco>) {
         this.alcoList = list
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder( itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var  alcoName: TextView = itemView.findViewById(R.id.name)
-        var  alcoImg: ImageView = itemView.findViewById(R.id.image)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_alco, parent, false))
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.alcoName.text = alcoList[position].name
-        holder.alcoImg.setImageResource(alcoList[position].img)
-
-        holder.itemView.setOnClickListener {
-            listener?.onItemClick(alcoList[position], position)
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(
+            ItemAlcoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        ).apply {
+            itemView.setOnClickListener { presenter.itemClickListener() }
         }
     }
 
-    override fun getItemCount(): Int {
-        return alcoList.size
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        presenter.bindView(holder.apply {
+            pos = position
+
+        })
     }
 
-    fun interface OnItemViewClickListener {
-        fun onItemClick(alco: Alco, position: Int)
+    override fun getItemCount(): Int {
+        return presenter.getCount()
+    }
+
+    inner class ViewHolder(private val vb: ItemAlcoBinding) : RecyclerView.ViewHolder(vb.root),
+        AlcoItemView {
+
+        override var pos: Int = -1
+
+        override fun setName(name: String) {
+            vb.name.text = name
+        }
+
+        override fun setImg(img: Int) {
+            vb.image.setImageResource(presenter.alcos[pos].img)
+        }
     }
 }

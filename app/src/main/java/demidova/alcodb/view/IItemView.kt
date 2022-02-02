@@ -1,5 +1,6 @@
-package demidova.alcodb.ui.base
+package demidova.alcodb.view
 
 interface IItemView {
+
     var pos: Int
 }
