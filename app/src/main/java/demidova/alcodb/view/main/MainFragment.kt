@@ -24,13 +24,13 @@ import moxy.presenter.InjectPresenter
 
 class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListener {
 
-    private val presenter by moxyPresenter { AlcoPresenter(RepositoryImpl(), App.instance.router)}
+    private val presenter by moxyPresenter { AlcoPresenter(RepositoryImpl(), App.instance.router) }
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
     private val alcoAdapter by lazy {
-        AlcoAdapter(presenter.alcoListPresenter)
+        AlcoAdapter(presenter::onUserClicked)
     }
 
     override fun onCreateView(
@@ -60,8 +60,7 @@ class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListene
         return true
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun updateList() {
-        alcoAdapter.notifyDataSetChanged()
+    override fun updateList(alcos: List<Alco>) {
+        alcoAdapter.submitList(alcos)
     }
 }
