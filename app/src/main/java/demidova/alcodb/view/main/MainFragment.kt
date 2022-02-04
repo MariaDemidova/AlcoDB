@@ -16,6 +16,7 @@ import demidova.alcodb.databinding.FragmentMainBinding
 import demidova.alcodb.model.RepositoryImpl
 import demidova.alcodb.presenter.AlcoPresenter
 import demidova.alcodb.presenter.MainPresenter
+import demidova.alcodb.rxJavaTemp.Consumer
 import demidova.alcodb.view.BackButtonListener
 import moxy.MvpAppCompatFragment
 import moxy.MvpView
@@ -48,6 +49,8 @@ class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListene
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = alcoAdapter
+
+        Consumer().subscribe()
     }
 
     override fun onDestroyView() {
