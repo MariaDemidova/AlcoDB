@@ -1,24 +1,50 @@
 package demidova.alcodb.view.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
+import com.github.terrakok.cicerone.androidx.AppNavigator
+import demidova.alcodb.App
 import demidova.alcodb.R
 import demidova.alcodb.databinding.ActivityMainBinding
-import demidova.alcodb.view.main.MainFragment
+import demidova.alcodb.presenter.MainPresenter
+import demidova.alcodb.view.BackButtonListener
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
+import java.util.zip.Inflater
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MvpAppCompatActivity(), MainView {
 
-    private val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
+    private val navigator = AppNavigator(this, R.id.container)
+
+    private val presenter by moxyPresenter {
+        MainPresenter(App.instance.router)
     }
+
+    private var vb: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
+        vb = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(vb?.root)
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        App.instance.navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        App.instance.navigatorHolder.removeNavigator()
+        super.onPause()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        supportFragmentManager.fragments.forEach {
+            if(it is BackButtonListener && it.backPressed()){
+                return
+            }
         }
+        presenter.onBackPressed()
     }
 }

@@ -4,8 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android/AlcoDB/app/src/main/res/layout/activity_main.xml" value="0.20244565217391305" />
+        <entry key="..\:/Android/AlcoDB/app/src/main/res/layout/fragment_details.xml" value="0.17119565217391305" />
         <entry key="..\:/Android/AlcoDB/app/src/main/res/layout/fragment_main.xml" value="0.20244565217391305" />
+        <entry key="..\:/Android/AlcoDB/app/src/main/res/layout/fragment_user.xml" value="0.17708333333333334" />
         <entry key="..\:/Android/AlcoDB/app/src/main/res/layout/item_alco.xml" value="0.175" />
+        <entry key="..\:/Android/AlcoDB/app/src/main/res/layout/item_users.xml" value="0.2" />
       </map>
     </option>
   </component>
