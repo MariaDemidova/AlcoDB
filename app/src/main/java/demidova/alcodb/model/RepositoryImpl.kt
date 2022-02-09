@@ -1,8 +1,12 @@
 package demidova.alcodb.model
 
+import io.reactivex.rxjava3.annotations.NonNull
+import io.reactivex.rxjava3.core.Observable
+
+
 class RepositoryImpl : Repository{
-    override fun getAlcoList(): List<Alco> {
-        return arrayListOf(
+    override fun getAlcoList(): @NonNull Observable<ArrayList<Alco>>? {
+        return Observable.just(arrayListOf(
             Alco("Мартини"),
             Alco("Ром"),
             Alco("Текилла"),
@@ -12,6 +16,6 @@ class RepositoryImpl : Repository{
             Alco("Вода из под крана"),
             Alco("Кровавая Мэри"),
             Alco("Рябина на коньяке"),
-        )
+        ))
     }
 }

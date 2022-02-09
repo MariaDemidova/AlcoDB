@@ -21,9 +21,12 @@ class AlcoPresenter(val repository: RepositoryImpl, private val router: Router) 
     }
 
     private fun loadData() {
-        val alcos = repository.getAlcoList()
+        repository.getAlcoList()
+            ?.subscribe {
+                viewState.updateList(it)
+            }
 
-        viewState.updateList(alcos)
+       // viewState.updateList(alcos)
     }
 
     fun onUserClicked(alco: Alco) {

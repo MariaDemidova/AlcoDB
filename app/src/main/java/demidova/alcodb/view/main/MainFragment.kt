@@ -1,27 +1,19 @@
 package demidova.alcodb.view.main
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import demidova.alcodb.App
-import demidova.alcodb.model.Alco
-import demidova.alcodb.view.adapter.AlcoAdapter
-import demidova.alcodb.R
 import demidova.alcodb.databinding.FragmentMainBinding
+import demidova.alcodb.model.Alco
 import demidova.alcodb.model.RepositoryImpl
 import demidova.alcodb.presenter.AlcoPresenter
-import demidova.alcodb.presenter.MainPresenter
-import demidova.alcodb.rxJavaTemp.Consumer
 import demidova.alcodb.view.BackButtonListener
+import demidova.alcodb.view.adapter.AlcoAdapter
 import moxy.MvpAppCompatFragment
-import moxy.MvpView
 import moxy.ktx.moxyPresenter
-import moxy.presenter.InjectPresenter
 
 class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListener {
 
@@ -50,7 +42,6 @@ class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListene
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = alcoAdapter
 
-        Consumer().subscribe()
     }
 
     override fun onDestroyView() {
