@@ -48,7 +48,7 @@ class DetailsFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonList
         return true
     }
 
-    override fun updateList() {
+    override fun updateList(alcos: List<Alco>) {
 
     }
 
