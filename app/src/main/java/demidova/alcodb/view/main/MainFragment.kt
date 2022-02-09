@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentMainBinding
@@ -39,8 +41,12 @@ class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+        }
         binding.recyclerView.adapter = alcoAdapter
+
+        binding.btnGoToImgConverter.setOnClickListener { presenter.goToImageConverter() }
 
     }
 
@@ -49,10 +55,8 @@ class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListene
         _binding = null
     }
 
-    override fun backPressed(): Boolean {
-        presenter.backPressed()
-        return true
-    }
+    override fun backPressed(): Boolean = presenter.backPressed()
+
 
     override fun updateList(alcos: List<Alco>) {
         alcoAdapter.submitList(alcos)

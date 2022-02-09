@@ -44,9 +44,7 @@ class DetailsFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonList
     }
 
     override fun backPressed(): Boolean {
-      //  presenter.backPressed()
-        activity?.onBackPressed()
-        return true
+      return presenter.backPressed()
     }
 
     override fun updateList(alcos: List<Alco>) {
