@@ -7,16 +7,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import demidova.alcodb.databinding.ItemAlcoBinding
 import demidova.alcodb.model.Alco
+import demidova.alcodb.model.AlcoDataObject
 
 class AlcoAdapter(
-    private val itemClickListener: (Alco) -> Unit
+    private val itemClickListener: (AlcoDataObject) -> Unit
     ) :
 
-    ListAdapter <Alco, AlcoAdapter.ViewHolder>(AlcoItemCallback) {
+    ListAdapter <AlcoDataObject, AlcoAdapter.ViewHolder>(AlcoItemCallback) {
 
-    private var alcoList: List<Alco> = arrayListOf()
+    private var alcoList: List<AlcoDataObject> = arrayListOf()
 
-    internal fun setData(list: List<Alco>) {
+    internal fun setData(list: List<AlcoDataObject>) {
         this.alcoList = list
         notifyDataSetChanged()
     }
@@ -35,20 +36,20 @@ class AlcoAdapter(
     inner class ViewHolder(private val vb: ItemAlcoBinding) : RecyclerView.ViewHolder(vb.root) {
 
 
-        fun setInfo(alco: Alco) {
+        fun setInfo(alco: AlcoDataObject) {
             vb.root.setOnClickListener { itemClickListener(alco) }
-            vb.name.text = alco.name
+            vb.name.text = alco.strDrink
             vb.image.setImageResource(alco.img)
         }
     }
 }
 
-object AlcoItemCallback: DiffUtil.ItemCallback<Alco>(){
-    override fun areItemsTheSame(oldItem: Alco, newItem: Alco): Boolean {
+object AlcoItemCallback: DiffUtil.ItemCallback<AlcoDataObject>(){
+    override fun areItemsTheSame(oldItem: AlcoDataObject, newItem: AlcoDataObject): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: Alco, newItem: Alco): Boolean {
+    override fun areContentsTheSame(oldItem: AlcoDataObject, newItem: AlcoDataObject): Boolean {
         return oldItem == newItem
     }
 

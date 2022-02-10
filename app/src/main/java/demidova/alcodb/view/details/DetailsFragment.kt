@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentDetailsBinding
 import demidova.alcodb.model.Alco
+import demidova.alcodb.model.AlcoDataObject
 import demidova.alcodb.model.RepositoryImpl
+import demidova.alcodb.network.ApiHolder
 import demidova.alcodb.presenter.AlcoPresenter
 import demidova.alcodb.view.BackButtonListener
 import demidova.alcodb.view.main.MainViewFragment
@@ -17,7 +20,7 @@ import moxy.ktx.moxyPresenter
 
 class DetailsFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListener {
 
-    private val presenter by moxyPresenter { AlcoPresenter(RepositoryImpl(), App.instance.router) }
+    private val presenter by moxyPresenter { AlcoPresenter(RepositoryImpl(ApiHolder.alcoApiService), App.instance.router) }
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
@@ -33,8 +36,8 @@ class DetailsFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val alco = arguments?.getParcelable<Alco>("alco")
-        binding.nameDetails.text = alco?.name
+        val alco = arguments?.getParcelable<AlcoDataObject>("alco")
+        binding.nameDetails.text = alco?.strDrink
         binding.imgDetails.setImageResource(alco!!.img)
     }
 
@@ -47,8 +50,13 @@ class DetailsFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonList
       return presenter.backPressed()
     }
 
-    override fun updateList(alcos: List<Alco>) {
+    override fun updateList(alcos: List<AlcoDataObject>) {
 
+    }
+
+    override fun showError(message: String?) {
+        Toast.makeText(requireContext(), message.orEmpty(), Toast.LENGTH_SHORT)
+            .show()
     }
 
 }

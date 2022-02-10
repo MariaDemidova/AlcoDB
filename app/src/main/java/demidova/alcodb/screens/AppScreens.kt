@@ -5,6 +5,7 @@ import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import demidova.alcodb.imgConverter.ImgConverterFragment
 import demidova.alcodb.model.Alco
+import demidova.alcodb.model.AlcoDataObject
 import demidova.alcodb.view.details.DetailsFragment
 import demidova.alcodb.view.main.MainFragment
 
@@ -14,7 +15,7 @@ object AppScreens {
         return FragmentScreen { MainFragment()}
     }
 
-    fun detailsScreen(alco: Alco): Screen{
+    fun detailsScreen(alco: AlcoDataObject): Screen{
         return FragmentScreen { DetailsFragment().apply {
             arguments = bundleOf("alco" to alco)
         } }
