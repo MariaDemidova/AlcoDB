@@ -17,13 +17,12 @@ object ApiHolder {
 
     private val gson by lazy {
         GsonBuilder()
-            .excludeFieldsWithoutExposeAnnotation()
             .create()
     }
 
     private val retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("https://the-cocktail-db.p.rapidapi.com")
+            .baseUrl("https://www.thecocktaildb.com/api/json/v1/1/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .client(okHttpClient)

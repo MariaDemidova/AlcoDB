@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentMainBinding
-import demidova.alcodb.model.Alco
 import demidova.alcodb.model.AlcoDataObject
+import demidova.alcodb.model.AlcoList
 import demidova.alcodb.model.RepositoryImpl
 import demidova.alcodb.network.ApiHolder
 import demidova.alcodb.presenter.AlcoPresenter

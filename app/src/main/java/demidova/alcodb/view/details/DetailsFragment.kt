@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentDetailsBinding
-import demidova.alcodb.model.Alco
 import demidova.alcodb.model.AlcoDataObject
+import demidova.alcodb.model.AlcoList
 import demidova.alcodb.model.RepositoryImpl
 import demidova.alcodb.network.ApiHolder
 import demidova.alcodb.presenter.AlcoPresenter
@@ -50,7 +50,7 @@ class DetailsFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonList
       return presenter.backPressed()
     }
 
-    override fun updateList(alcos: List<AlcoDataObject>) {
+    override fun updateList(alcos:List<AlcoDataObject>) {
 
     }
 

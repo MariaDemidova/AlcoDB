@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import demidova.alcodb.databinding.ItemAlcoBinding
-import demidova.alcodb.model.Alco
 import demidova.alcodb.model.AlcoDataObject
 
 class AlcoAdapter(
