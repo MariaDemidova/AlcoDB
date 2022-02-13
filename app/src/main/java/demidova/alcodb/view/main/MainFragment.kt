@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentMainBinding
 import demidova.alcodb.model.AlcoDataObject
-import demidova.alcodb.model.AlcoList
 import demidova.alcodb.model.RepositoryImpl
 import demidova.alcodb.network.ApiHolder
 import demidova.alcodb.presenter.AlcoPresenter
+import demidova.alcodb.utils.GlideImageLoader
 import demidova.alcodb.view.BackButtonListener
 import demidova.alcodb.view.adapter.AlcoAdapter
 import moxy.MvpAppCompatFragment
@@ -20,13 +20,18 @@ import moxy.ktx.moxyPresenter
 
 class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListener {
 
-    private val presenter by moxyPresenter { AlcoPresenter(RepositoryImpl(ApiHolder.alcoApiService), App.instance.router) }
+    private val presenter by moxyPresenter {
+        AlcoPresenter(
+            RepositoryImpl(ApiHolder.alcoApiService),
+            App.instance.router
+        )
+    }
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
     private val alcoAdapter by lazy {
-        AlcoAdapter(presenter::onUserClicked)
+        AlcoAdapter(GlideImageLoader(), presenter::onUserClicked)
     }
 
     override fun onCreateView(

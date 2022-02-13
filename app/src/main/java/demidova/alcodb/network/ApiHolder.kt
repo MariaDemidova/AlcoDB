@@ -1,6 +1,5 @@
 package demidova.alcodb.network
 
-import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,7 +10,7 @@ import retrofit2.create
 
 object ApiHolder {
 
-     val alcoApiService by  lazy {
+    val alcoApiService by lazy {
         retrofit.create<AlcoApiService>()
     }
 

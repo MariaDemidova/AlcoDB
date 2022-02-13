@@ -2,13 +2,16 @@ package demidova.alcodb.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import demidova.alcodb.databinding.ItemAlcoBinding
 import demidova.alcodb.model.AlcoDataObject
+import demidova.alcodb.utils.ImageLoader
 
 class AlcoAdapter(
+    private val imageLoader: ImageLoader<ImageView>,
     private val itemClickListener: (AlcoDataObject) -> Unit
     ) :
 
@@ -34,11 +37,12 @@ class AlcoAdapter(
 
     inner class ViewHolder(private val vb: ItemAlcoBinding) : RecyclerView.ViewHolder(vb.root) {
 
-
         fun setInfo(alco: AlcoDataObject) {
             vb.root.setOnClickListener { itemClickListener(alco) }
             vb.name.text = alco.strDrink
             vb.image.setImageResource(alco.img)
+
+            alco.strDrinkThumb?.let { imageLoader.loadInto(it, vb.image) }
         }
     }
 }

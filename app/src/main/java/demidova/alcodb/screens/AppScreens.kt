@@ -10,17 +10,18 @@ import demidova.alcodb.view.main.MainFragment
 
 object AppScreens {
 
-    fun alcoScreen(): Screen{
-        return FragmentScreen { MainFragment()}
+    fun alcoScreen(): Screen {
+        return FragmentScreen { MainFragment() }
     }
 
-    fun detailsScreen(alco: AlcoDataObject): Screen{
-        return FragmentScreen { DetailsFragment().apply {
-            arguments = bundleOf("alco" to alco)
-        } }
+    fun detailsScreen(alco: AlcoDataObject): Screen {
+        return FragmentScreen {
+            DetailsFragment().apply {
+                arguments = bundleOf("alco" to alco)
+            }
+        }
     }
 
     fun imageConverter(): Screen =
         FragmentScreen { ImgConverterFragment() }
-
 }

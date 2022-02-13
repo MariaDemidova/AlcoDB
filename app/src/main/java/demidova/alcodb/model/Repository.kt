@@ -4,6 +4,7 @@ import io.reactivex.rxjava3.core.Single
 
 interface Repository {
 
+    fun getAllAlcoholicCocktails(): Single<AlcoList>
 
-    fun getAllAlcoholicCocktails( ): Single<AlcoList>
+    fun getAlcoById(id: String): Single<AlcoList>
 }

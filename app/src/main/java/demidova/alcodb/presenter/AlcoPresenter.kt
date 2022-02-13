@@ -1,9 +1,7 @@
 package demidova.alcodb.presenter
 
-import android.util.Log
 import com.github.terrakok.cicerone.Router
 import demidova.alcodb.model.AlcoDataObject
-
 import demidova.alcodb.model.Repository
 import demidova.alcodb.screens.AppScreens
 import demidova.alcodb.view.main.MainViewFragment
@@ -12,7 +10,7 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 
 @InjectViewState
-class AlcoPresenter(val repository: Repository, private val router: Router) :
+class AlcoPresenter(private val repository: Repository, private val router: Router) :
     MvpPresenter<MainViewFragment>() {
 
     override fun onFirstViewAttach() {
@@ -25,14 +23,14 @@ class AlcoPresenter(val repository: Repository, private val router: Router) :
         var listDTO = mutableListOf<AlcoDataObject>()
         repository.getAllAlcoholicCocktails()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({alcoList->
+            .subscribe({ alcoList ->
                 alcoList.drinks.forEach {
                     listDTO.add(it)
                 }
                 viewState.updateList(listDTO)
             },
                 {
-                    Log.d("gopa", it.toString())
+
 
                     viewState.showError(it.message)
                 })
