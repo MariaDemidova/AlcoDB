@@ -8,9 +8,11 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentMainBinding
+import demidova.alcodb.db.dao.AlcoDao
 import demidova.alcodb.model.AlcoDataObject
 import demidova.alcodb.model.RepositoryImpl
 import demidova.alcodb.network.ApiHolder
+import demidova.alcodb.network.NetworkStatus
 import demidova.alcodb.presenter.AlcoPresenter
 import demidova.alcodb.utils.GlideImageLoader
 import demidova.alcodb.view.BackButtonListener
@@ -23,7 +25,9 @@ class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListene
     private val presenter by moxyPresenter {
         AlcoPresenter(
             RepositoryImpl(ApiHolder.alcoApiService),
-            App.instance.router
+            App.instance.router,
+            App.instance.dataBase.alcoDao,
+            NetworkStatus(requireContext())
         )
     }
 

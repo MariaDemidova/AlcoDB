@@ -11,6 +11,7 @@ import demidova.alcodb.model.AlcoDataObject
 import demidova.alcodb.model.AlcoList
 import demidova.alcodb.model.RepositoryImpl
 import demidova.alcodb.network.ApiHolder
+import demidova.alcodb.network.NetworkStatus
 import demidova.alcodb.presenter.DetailsPresenter
 import demidova.alcodb.utils.GlideImageLoader
 import demidova.alcodb.view.BackButtonListener
