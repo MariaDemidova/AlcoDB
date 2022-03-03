@@ -32,7 +32,7 @@ class AlcoPresenter(
 
     private fun loadData() {
         var listADO = mutableListOf<AlcoDataObject>()
-
+        Log.d("gopa wi", "${networkStatus.isOnline()}")
         if (networkStatus.isOnline()) {
             repository.getAllAlcoholicCocktails()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,16 +52,16 @@ class AlcoPresenter(
                     })
 
         } else{
-
+            Log.d("gopa wi", "else")
             alcoDao.getAllAlco()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({listEntity->
-                    Log.d("gopa wi", "${listEntity.size}")
+
 
                            listEntity.forEach {
                              listADO.add(convertEntityToADO(it))
-                               Log.d("gopa wi", it.toString())
+
                            }
                     viewState.updateList(listADO)
                 },{
@@ -93,30 +93,6 @@ class AlcoPresenter(
         return listADO
     }
 
-    private fun getListOfId(list: List<AlcoDataObject>): List<String> {
-        val idList = mutableListOf<String>()
-        list.forEach {
-            idList.add(it.idDrink)
-        }
-        return idList
-    }
-
-    private fun getListADOFromRetrofit(list: List<String>): List<AlcoDataObject> {
-        var listADO = mutableListOf<AlcoDataObject>()
-        list.forEach {
-            repository.getAlcoById(it)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ alcoList ->
-                    alcoList.drinks.forEach { ADO->
-                        listADO.add(ADO)
-                    }
-                },
-                    { viewState.showError(it.message) })
-        }
-
-        return listADO
-    }
-
     private fun conertAlcoListADOToAlcoEntity(alco:  AlcoDataObject ) :  AlcoEntity {
          return AlcoEntity(
              strDrink = alco.strDrink,
@@ -134,12 +110,13 @@ class AlcoPresenter(
     }
 
     fun saveAlco(alcoEntity: AlcoEntity) {
+       // Log.d("gopa save", alcoEntity.toString())
         Completable.fromRunnable {
             alcoDao.insert(alcoEntity)
         }
             .subscribeOn(Schedulers.io())
             .subscribe()
-        Log.d("gopa", alcoEntity.toString())
+
     }
 
 }
