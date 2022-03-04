@@ -2,6 +2,7 @@ package demidova.alcodb.presenter
 
 import android.util.Log
 import com.github.terrakok.cicerone.Router
+import demidova.alcodb.cache.AlcoCache
 import demidova.alcodb.db.dao.AlcoDao
 import demidova.alcodb.db.entity.AlcoEntity
 import demidova.alcodb.model.AlcoDataObject
@@ -23,7 +24,7 @@ class AlcoPresenter(
     private val alcoDao: AlcoDao,
     private val networkStatus: NetworkStatus
 ) :
-    MvpPresenter<MainViewFragment>() {
+    MvpPresenter<MainViewFragment>(), AlcoCache {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -42,7 +43,7 @@ class AlcoPresenter(
                     viewState.updateList(listADO)
                     Log.d("gopa", "$listADO")
                     listADO.forEach {
-                        saveAlco(conertAlcoListADOToAlcoEntity(it))
+                        cacheAlcoList(conertAlcoListADOToAlcoEntity(it))
 
                     }
 
@@ -109,14 +110,13 @@ class AlcoPresenter(
         )
     }
 
-    fun saveAlco(alcoEntity: AlcoEntity) {
-       // Log.d("gopa save", alcoEntity.toString())
+
+    override fun cacheAlcoList(alcoEntity: AlcoEntity) {
         Completable.fromRunnable {
             alcoDao.insert(alcoEntity)
         }
             .subscribeOn(Schedulers.io())
             .subscribe()
-
     }
 
 }

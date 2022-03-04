@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.core.Single
 @Dao
 interface AlcoDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(alco: AlcoEntity)
 
     @Query("SELECT * FROM cocktail_table")

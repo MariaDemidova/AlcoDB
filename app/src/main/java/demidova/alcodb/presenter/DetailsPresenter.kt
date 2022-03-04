@@ -2,6 +2,7 @@ package demidova.alcodb.presenter
 
 import android.util.Log
 import com.github.terrakok.cicerone.Router
+import demidova.alcodb.cache.DetailsCache
 import demidova.alcodb.db.dao.AlcoDao
 import demidova.alcodb.db.entity.AlcoEntity
 import demidova.alcodb.model.AlcoDataObject
@@ -22,7 +23,7 @@ class DetailsPresenter(
     private val alcoDao: AlcoDao,
     private val networkStatus: NetworkStatus
 ) :
-    MvpPresenter<IDetailsViewFragment>() {
+    MvpPresenter<IDetailsViewFragment>(), DetailsCache {
 
     fun loadData(id: String) {
         if (networkStatus.isOnline()) {
@@ -32,7 +33,7 @@ class DetailsPresenter(
                     Log.d("gopa det", "${convertAlcoListToADO(it)}")
                     val ado = convertAlcoListToADO(it)
                     viewState.loadAlco(ado)
-                    saveAlco(convertADOToEntity(ado))
+                    cacheDrtails(convertADOToEntity(ado))
                 },
                     {
 
@@ -91,13 +92,7 @@ class DetailsPresenter(
         )
     }
 
-    fun saveAlco(alcoEntity: AlcoEntity) {
-        Completable.fromRunnable {
-            alcoDao.insert(alcoEntity)
-        }
-            .subscribeOn(Schedulers.io())
-            .subscribe()
-    }
+
 
     private fun convertEntityToADO(alcoEntity: AlcoEntity): AlcoDataObject {
         return AlcoDataObject(
@@ -150,6 +145,14 @@ class DetailsPresenter(
     fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+
+    override fun cacheDrtails(entity: AlcoEntity) {
+        Completable.fromRunnable {
+            alcoDao.insert(entity)
+        }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 
 }
