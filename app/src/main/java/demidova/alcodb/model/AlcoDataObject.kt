@@ -8,8 +8,6 @@ import kotlinx.parcelize.Parcelize
 data class AlcoDataObject(
     var idDrink: String = "",
     var strInstructions: String = "",
-    var strGlass: String = "",
-    val img: Int = R.drawable.alco,
     var strDrink: String = "",
     var strDrinkThumb: String = "",
 

@@ -40,8 +40,6 @@ class AlcoAdapter(
         fun setInfo(alco: AlcoDataObject) {
             vb.root.setOnClickListener { itemClickListener(alco) }
             vb.name.text = alco.strDrink
-            vb.image.setImageResource(alco.img)
-
             alco.strDrinkThumb?.let { imageLoader.loadInto(it, vb.image) }
         }
     }
