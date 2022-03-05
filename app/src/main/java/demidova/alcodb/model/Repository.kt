@@ -1,8 +1,10 @@
 package demidova.alcodb.model
 
-import io.reactivex.rxjava3.annotations.NonNull
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 interface Repository {
-    fun getAlcoList(): @NonNull Observable<ArrayList<Alco>>?
+
+    fun getAllAlcoholicCocktails(): Single<AlcoList>
+
+    fun getAlcoById(id: String): Single<AlcoList>
 }

@@ -1,21 +1,17 @@
 package demidova.alcodb.model
 
-import io.reactivex.rxjava3.annotations.NonNull
-import io.reactivex.rxjava3.core.Observable
+import demidova.alcodb.network.AlcoApiService
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 
-class RepositoryImpl : Repository{
-    override fun getAlcoList(): @NonNull Observable<ArrayList<Alco>>? {
-        return Observable.just(arrayListOf(
-            Alco("Мартини"),
-            Alco("Ром"),
-            Alco("Текилла"),
-            Alco("Водка с соком"),
-            Alco("Пивной коктейль"),
-            Alco("Боярышник с лимоном"),
-            Alco("Вода из под крана"),
-            Alco("Кровавая Мэри"),
-            Alco("Рябина на коньяке"),
-        ))
+class RepositoryImpl(private val alcoApiService: AlcoApiService) : Repository {
+
+    override fun getAllAlcoholicCocktails(): Single<AlcoList> {
+        return alcoApiService.listAllCategoriesA().subscribeOn(Schedulers.io())
+    }
+
+    override fun getAlcoById(idDrink: String): Single<AlcoList> {
+        return alcoApiService.getCocktailById(idDrink).subscribeOn(Schedulers.io())
     }
 }

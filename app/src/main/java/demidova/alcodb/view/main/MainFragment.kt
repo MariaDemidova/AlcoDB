@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentMainBinding
-import demidova.alcodb.model.Alco
+import demidova.alcodb.model.AlcoDataObject
 import demidova.alcodb.model.RepositoryImpl
+import demidova.alcodb.network.ApiHolder
 import demidova.alcodb.presenter.AlcoPresenter
+import demidova.alcodb.utils.GlideImageLoader
 import demidova.alcodb.view.BackButtonListener
 import demidova.alcodb.view.adapter.AlcoAdapter
 import moxy.MvpAppCompatFragment
@@ -19,13 +20,18 @@ import moxy.ktx.moxyPresenter
 
 class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListener {
 
-    private val presenter by moxyPresenter { AlcoPresenter(RepositoryImpl(), App.instance.router) }
+    private val presenter by moxyPresenter {
+        AlcoPresenter(
+            RepositoryImpl(ApiHolder.alcoApiService),
+            App.instance.router
+        )
+    }
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
     private val alcoAdapter by lazy {
-        AlcoAdapter(presenter::onUserClicked)
+        AlcoAdapter(GlideImageLoader(), presenter::onUserClicked)
     }
 
     override fun onCreateView(
@@ -58,7 +64,12 @@ class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListene
     override fun backPressed(): Boolean = presenter.backPressed()
 
 
-    override fun updateList(alcos: List<Alco>) {
+    override fun updateList(alcos: List<AlcoDataObject>) {
         alcoAdapter.submitList(alcos)
+    }
+
+    override fun showError(message: String?) {
+        Toast.makeText(requireContext(), message.orEmpty(), Toast.LENGTH_SHORT)
+            .show()
     }
 }

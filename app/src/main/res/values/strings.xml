@@ -11,4 +11,8 @@
     <string name="AD_access_to_img_title">Доступ к контактам</string>
     <string name="AD_access_to_img_message">Вы запретили доступ. Не хотите ли открыть доступ?</string>
     <string name="No_access_to_permission">No access to permission</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="CockteilName">Наименование напитка</string>
+    <string name="instructions">Instructions:</string>
+    <string name="Description">Описание</string>
 </resources>
