@@ -1,27 +1,21 @@
 package demidova.alcodb.view.main
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
+import android.widget.GridLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import demidova.alcodb.App
-import demidova.alcodb.model.Alco
-import demidova.alcodb.view.adapter.AlcoAdapter
-import demidova.alcodb.R
 import demidova.alcodb.databinding.FragmentMainBinding
+import demidova.alcodb.model.Alco
 import demidova.alcodb.model.RepositoryImpl
 import demidova.alcodb.presenter.AlcoPresenter
-import demidova.alcodb.presenter.MainPresenter
-import demidova.alcodb.rxJavaTemp.Consumer
 import demidova.alcodb.view.BackButtonListener
+import demidova.alcodb.view.adapter.AlcoAdapter
 import moxy.MvpAppCompatFragment
-import moxy.MvpView
 import moxy.ktx.moxyPresenter
-import moxy.presenter.InjectPresenter
 
 class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListener {
 
@@ -47,10 +41,13 @@ class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+        }
         binding.recyclerView.adapter = alcoAdapter
 
-        Consumer().subscribe()
+        binding.btnGoToImgConverter.setOnClickListener { presenter.goToImageConverter() }
+
     }
 
     override fun onDestroyView() {
@@ -58,10 +55,8 @@ class MainFragment : MvpAppCompatFragment(), MainViewFragment, BackButtonListene
         _binding = null
     }
 
-    override fun backPressed(): Boolean {
-        presenter.backPressed()
-        return true
-    }
+    override fun backPressed(): Boolean = presenter.backPressed()
+
 
     override fun updateList(alcos: List<Alco>) {
         alcoAdapter.submitList(alcos)
