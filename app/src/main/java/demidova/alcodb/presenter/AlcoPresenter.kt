@@ -2,6 +2,7 @@ package demidova.alcodb.presenter
 
 import android.util.Log
 import com.github.terrakok.cicerone.Router
+import demidova.alcodb.App
 import demidova.alcodb.cache.AlcoCache
 import demidova.alcodb.db.dao.AlcoDao
 import demidova.alcodb.db.entity.AlcoEntity
@@ -10,30 +11,35 @@ import demidova.alcodb.model.AlcoList
 import demidova.alcodb.model.Repository
 import demidova.alcodb.network.NetworkStatus
 import demidova.alcodb.screens.AppScreens
+import demidova.alcodb.screens.IAppScreens
 import demidova.alcodb.view.main.MainViewFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 @InjectViewState
-class AlcoPresenter(
-    private val repository: Repository,
-    private val router: Router,
-    private val alcoDao: AlcoDao,
-    private val networkStatus: NetworkStatus
+class AlcoPresenter @Inject constructor(
+    private var repository: Repository,
+    private var router: Router,
+    private var alcoDao: AlcoDao,
+    private var networkStatus: NetworkStatus,
+    private var screens: IAppScreens
 ) :
     MvpPresenter<MainViewFragment>(), AlcoCache {
 
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
+        App.instance.appComponent.inject(this)
         loadData()
     }
 
     private fun loadData() {
         var listADO = mutableListOf<AlcoDataObject>()
-        Log.d("gopa wi", "${networkStatus.isOnline()}")
+        Log.d("popa", "${networkStatus.isOnline()}")
         if (networkStatus.isOnline()) {
             repository.getAllAlcoholicCocktails()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,20 +58,20 @@ class AlcoPresenter(
                         viewState.showError(it.message)
                     })
 
-        } else{
+        } else {
             Log.d("gopa wi", "else")
             alcoDao.getAllAlco()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({listEntity->
+                .subscribe({ listEntity ->
 
 
-                           listEntity.forEach {
-                             listADO.add(convertEntityToADO(it))
+                    listEntity.forEach {
+                        listADO.add(convertEntityToADO(it))
 
-                           }
+                    }
                     viewState.updateList(listADO)
-                },{
+                }, {
                     Log.d("gopa wi", "Err")
                     viewState.showError(it.message)
                 })
@@ -74,7 +80,7 @@ class AlcoPresenter(
     }
 
     fun onUserClicked(alco: AlcoDataObject) {
-        router.navigateTo(AppScreens.detailsScreen(alco))
+        router.navigateTo(screens.detailsScreen(alco))
     }
 
     fun backPressed(): Boolean {
@@ -83,7 +89,7 @@ class AlcoPresenter(
     }
 
     fun goToImageConverter() {
-        router.navigateTo(AppScreens.imageConverter())
+        router.navigateTo(screens.imageConverter())
     }
 
     private fun convertAlcoListToListADO(alcoList: AlcoList): List<AlcoDataObject> {
@@ -94,15 +100,15 @@ class AlcoPresenter(
         return listADO
     }
 
-    private fun conertAlcoListADOToAlcoEntity(alco:  AlcoDataObject ) :  AlcoEntity {
-         return AlcoEntity(
-             strDrink = alco.strDrink,
-             strDrinkThumb = alco.strDrinkThumb,
-             idDrink = alco.idDrink
-         )
+    private fun conertAlcoListADOToAlcoEntity(alco: AlcoDataObject): AlcoEntity {
+        return AlcoEntity(
+            strDrink = alco.strDrink,
+            strDrinkThumb = alco.strDrinkThumb,
+            idDrink = alco.idDrink
+        )
     }
 
-    private fun convertEntityToADO(entity: AlcoEntity): AlcoDataObject{
+    private fun convertEntityToADO(entity: AlcoEntity): AlcoDataObject {
         return AlcoDataObject(
             idDrink = entity.idDrink,
             strDrink = entity.strDrink,

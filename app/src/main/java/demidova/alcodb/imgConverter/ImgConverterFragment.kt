@@ -12,11 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import com.github.terrakok.cicerone.Router
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentImgConverterBinding
 import demidova.alcodb.view.BackButtonListener
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class ImgConverterFragment : MvpAppCompatFragment(), IImageConverterView, BackButtonListener {
 
@@ -25,10 +27,13 @@ class ImgConverterFragment : MvpAppCompatFragment(), IImageConverterView, BackBu
 
     private var imageUri: Uri? = null
 
+    @Inject
+    lateinit var router: Router
+
     private val presenter: ImgConverterPresenter by moxyPresenter {
         ImgConverterPresenter(
             ConverterJpgToPng(requireContext()),
-            App.instance.router
+            router
         )
     }
 
