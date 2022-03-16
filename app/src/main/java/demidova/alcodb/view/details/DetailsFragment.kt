@@ -17,6 +17,7 @@ import moxy.ktx.moxyPresenter
 class DetailsFragment : MvpAppCompatFragment(), IDetailsViewFragment, BackButtonListener {
     val alco = arguments?.getParcelable<AlcoDataObject>("alco")
     val gladImg = GlideImageLoader()
+
     private val presenter by moxyPresenter {
         App.instance.appComponent.provideAlcoPresenterFactory().presenter(alco!!.idDrink)
     }
@@ -37,7 +38,7 @@ class DetailsFragment : MvpAppCompatFragment(), IDetailsViewFragment, BackButton
         super.onViewCreated(view, savedInstanceState)
         presenter.loadData()
 
-        // alco?.let { presenter.loadData(it.idDrink) }
+         alco?.let { presenter.loadData() }
     }
 
     override fun onDestroyView() {

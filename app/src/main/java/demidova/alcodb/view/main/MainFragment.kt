@@ -9,9 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentMainBinding
 import demidova.alcodb.model.AlcoDataObject
-import demidova.alcodb.model.RepositoryImpl
-import demidova.alcodb.network.NetworkStatus
-import demidova.alcodb.presenter.AlcoPresenter
 import demidova.alcodb.utils.GlideImageLoader
 import demidova.alcodb.view.BackButtonListener
 import demidova.alcodb.view.adapter.AlcoAdapter

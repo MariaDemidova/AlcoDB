@@ -40,7 +40,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun retrofit(gson: Gson, okHttpClient: OkHttpClient,@Named("baseURL") baseURL: String): Retrofit {
+    fun retrofit(gson: Gson, okHttpClient: OkHttpClient,@Named(NAMED_BASE_URL) baseURL: String): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseURL)
             .addConverterFactory(GsonConverterFactory.create(gson))

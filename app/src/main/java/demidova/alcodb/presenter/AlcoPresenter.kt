@@ -8,9 +8,8 @@ import demidova.alcodb.db.dao.AlcoDao
 import demidova.alcodb.db.entity.AlcoEntity
 import demidova.alcodb.model.AlcoDataObject
 import demidova.alcodb.model.AlcoList
-import demidova.alcodb.model.Repository
+import demidova.alcodb.model.repos.alcoRepo.AlcoRepository
 import demidova.alcodb.network.NetworkStatus
-import demidova.alcodb.screens.AppScreens
 import demidova.alcodb.screens.IAppScreens
 import demidova.alcodb.view.main.MainViewFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -22,7 +21,7 @@ import javax.inject.Inject
 
 @InjectViewState
 class AlcoPresenter @Inject constructor(
-    private var repository: Repository,
+    private var alcoRepository: AlcoRepository,
     private var router: Router,
     private var alcoDao: AlcoDao,
     private var networkStatus: NetworkStatus,
@@ -41,7 +40,7 @@ class AlcoPresenter @Inject constructor(
         var listADO = mutableListOf<AlcoDataObject>()
         Log.d("popa", "${networkStatus.isOnline()}")
         if (networkStatus.isOnline()) {
-            repository.getAllAlcoholicCocktails()
+            alcoRepository.getAllAlcoholicCocktails()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ alcoList ->
                     listADO = convertAlcoListToListADO(alcoList) as MutableList<AlcoDataObject>

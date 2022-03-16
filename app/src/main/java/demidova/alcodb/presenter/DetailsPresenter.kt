@@ -1,6 +1,5 @@
 package demidova.alcodb.presenter
 
-import android.util.Log
 import com.github.terrakok.cicerone.Router
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -11,7 +10,8 @@ import demidova.alcodb.db.dao.AlcoDao
 import demidova.alcodb.db.entity.AlcoEntity
 import demidova.alcodb.model.AlcoDataObject
 import demidova.alcodb.model.AlcoList
-import demidova.alcodb.model.Repository
+import demidova.alcodb.model.repos.alcoRepo.AlcoRepository
+import demidova.alcodb.model.repos.detailsRepo.DetailsRepository
 import demidova.alcodb.network.NetworkStatus
 import demidova.alcodb.view.details.IDetailsViewFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -20,7 +20,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 
 class DetailsPresenter @AssistedInject constructor(
-    private var repository: Repository,
+    private var detailsRepository: DetailsRepository,
     private var router: Router,
     private var alcoDao: AlcoDao,
     private var networkStatus: NetworkStatus,
@@ -36,7 +36,7 @@ class DetailsPresenter @AssistedInject constructor(
 
     fun loadData() {
         if (networkStatus.isOnline()) {
-            repository.getAlcoById(id)
+            detailsRepository.getAlcoById(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val ado = convertAlcoListToADO(it)
