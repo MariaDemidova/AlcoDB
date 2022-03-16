@@ -8,20 +8,26 @@ import demidova.alcodb.model.AlcoDataObject
 import demidova.alcodb.view.details.DetailsFragment
 import demidova.alcodb.view.main.MainFragment
 
-object AppScreens {
+interface IAppScreens{
+    fun alcoScreen(): Screen
+    fun detailsScreen(alco: AlcoDataObject): Screen
+    fun imageConverter(): Screen
+}
 
-    fun alcoScreen(): Screen {
+class AppScreens : IAppScreens {
+
+   override fun alcoScreen(): Screen {
         return FragmentScreen { MainFragment() }
     }
 
-    fun detailsScreen(alco: AlcoDataObject): Screen {
+    override fun detailsScreen(alco: AlcoDataObject): Screen {
         return FragmentScreen {
             DetailsFragment().apply {
-                arguments = bundleOf("alco" to alco)
+                arguments = bundleOf("alco" to alco, )
             }
         }
     }
 
-    fun imageConverter(): Screen =
+    override fun imageConverter(): Screen =
         FragmentScreen { ImgConverterFragment() }
 }
