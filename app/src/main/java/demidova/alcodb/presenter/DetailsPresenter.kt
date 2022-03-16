@@ -36,7 +36,6 @@ class DetailsPresenter @AssistedInject constructor(
 
     fun loadData() {
         if (networkStatus.isOnline()) {
-            Log.d("popa", "$networkStatus.isOnline()у")
             repository.getAlcoById(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
