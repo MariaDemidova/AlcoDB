@@ -8,26 +8,20 @@ import android.widget.Toast
 import demidova.alcodb.App
 import demidova.alcodb.databinding.FragmentDetailsBinding
 import demidova.alcodb.model.AlcoDataObject
-import demidova.alcodb.model.RepositoryImpl
-import demidova.alcodb.network.ApiHolder
-import demidova.alcodb.network.NetworkStatus
-import demidova.alcodb.presenter.DetailsPresenter
 import demidova.alcodb.utils.GlideImageLoader
 import demidova.alcodb.view.BackButtonListener
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import android.util.Log
 
 
 class DetailsFragment : MvpAppCompatFragment(), IDetailsViewFragment, BackButtonListener {
 
     val gladImg = GlideImageLoader()
     private val presenter by moxyPresenter {
-        DetailsPresenter(
-            RepositoryImpl(ApiHolder.alcoApiService),
-            App.instance.router,
-            App.instance.dataBase.alcoDao,
-            NetworkStatus(requireContext())
-        )
+        val alco = arguments?.getParcelable<AlcoDataObject>("alco")
+        App.instance.appComponent.provideAlcoPresenterFactory().presenter(alco!!.idDrink)
+
     }
 
     private var _binding: FragmentDetailsBinding? = null
@@ -40,13 +34,13 @@ class DetailsFragment : MvpAppCompatFragment(), IDetailsViewFragment, BackButton
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val alco = arguments?.getParcelable<AlcoDataObject>("alco")
 
-        alco?.let { presenter.loadData(it.idDrink) }
+        presenter.loadData()
     }
 
     override fun onDestroyView() {

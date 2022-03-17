@@ -1,36 +1,44 @@
 package demidova.alcodb.presenter
 
-import android.util.Log
 import com.github.terrakok.cicerone.Router
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import demidova.alcodb.App
 import demidova.alcodb.cache.DetailsCache
 import demidova.alcodb.db.dao.AlcoDao
 import demidova.alcodb.db.entity.AlcoEntity
 import demidova.alcodb.model.AlcoDataObject
 import demidova.alcodb.model.AlcoList
-import demidova.alcodb.model.Repository
+import demidova.alcodb.model.repos.alcoRepo.AlcoRepository
+import demidova.alcodb.model.repos.detailsRepo.DetailsRepository
 import demidova.alcodb.network.NetworkStatus
 import demidova.alcodb.view.details.IDetailsViewFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import moxy.InjectViewState
 import moxy.MvpPresenter
 
-@InjectViewState
-class DetailsPresenter(
-    private val repository: Repository,
-    private val router: Router,
-    private val alcoDao: AlcoDao,
-    private val networkStatus: NetworkStatus
-) :
+class DetailsPresenter @AssistedInject constructor(
+    private var detailsRepository: DetailsRepository,
+    private var router: Router,
+    private var alcoDao: AlcoDao,
+    private var networkStatus: NetworkStatus,
+    @Assisted private val id: String) :
     MvpPresenter<IDetailsViewFragment>(), DetailsCache {
 
-    fun loadData(id: String) {
+
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        App.instance.appComponent.inject(this)
+    }
+
+    fun loadData() {
         if (networkStatus.isOnline()) {
-            repository.getAlcoById(id)
+            detailsRepository.getAlcoById(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.d("gopa det", "${convertAlcoListToADO(it)}")
                     val ado = convertAlcoListToADO(it)
                     viewState.loadAlco(ado)
                     cacheDrtails(convertADOToEntity(ado))
@@ -91,7 +99,6 @@ class DetailsPresenter(
             strMeasure15 = alcoDataObject.strMeasure15
         )
     }
-
 
 
     private fun convertEntityToADO(alcoEntity: AlcoEntity): AlcoDataObject {
@@ -155,4 +162,10 @@ class DetailsPresenter(
             .subscribe()
     }
 
+}
+
+@AssistedFactory
+interface AlcoPresenterFactory {
+
+    fun presenter(id: String):DetailsPresenter
 }
